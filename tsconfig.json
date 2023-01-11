@@ -20,7 +20,8 @@
     "paths": {
       "@infrastructure/*": ["src/infrastructure/*"],
       "@application/*": ["src/application/*"],
-      "@domain/*": ["src/domain/*"]
+      "@domain/*": ["src/domain/*"],
+      "@shared/*": ["src/_shared/*"]
     }
   },
   "include": ["src", "test"],

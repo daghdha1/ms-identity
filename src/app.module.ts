@@ -1,19 +1,22 @@
-import { CorreosExpressHookService } from '@application/carrier/service/CorreosExpressHook.service';
-import { DhlHookService } from '@application/carrier/service/DhlHook.service';
-import { GlsHookService } from '@application/carrier/service/GlsHook.service';
-import { CreateTrackingService } from '@application/client/service/Tracking.service';
-import { CarrierHookController } from '@infrastructure/controller/CarrierHook.controller';
-import { TrackingController } from '@infrastructure/controller/Tracking.controller';
+import { AuthService } from '@application/service/Auth.service';
+import { GetUserService } from '@application/service/GetUser.service';
+import { AuthController } from '@infrastructure/controller/Auth.controller';
+import { IdentityController } from '@infrastructure/controller/Identity.controller';
 import { Module } from '@nestjs/common';
+import { JwtModule } from '@nestjs/jwt';
+import { PassportModule } from '@nestjs/passport';
+import { jwtConstants } from './app.constants';
 
 @Module({
-  imports: [],
-  controllers: [TrackingController, CarrierHookController],
-  providers: [
-    CreateTrackingService,
-    CorreosExpressHookService,
-    GlsHookService,
-    DhlHookService,
+  controllers: [AuthController, IdentityController],
+  providers: [AuthService, GetUserService],
+  imports: [
+    PassportModule,
+    JwtModule.register({
+      secret: jwtConstants.secret,
+      signOptions: { expiresIn: '3600s' },
+    }),
   ],
+  exports: [],
 })
 export class AppModule {}
