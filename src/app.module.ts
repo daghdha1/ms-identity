@@ -1,21 +1,16 @@
-import { AuthService } from '@application/service/Auth.service';
-import { GetUserService } from '@application/service/GetUser.service';
-import { AuthController } from '@infrastructure/controller/Auth.controller';
-import { IdentityController } from '@infrastructure/controller/Identity.controller';
-import { Module } from '@nestjs/common';
-import { JwtModule } from '@nestjs/jwt';
-import { PassportModule } from '@nestjs/passport';
-import { MongoProvider } from '@shared/mongo-custom-provider/MongoProvider';
-import { MysqlProvider } from '@shared/mysql-custom-provider/MysqlProvider';
-import { convertEnvToBoolean } from '@shared/utils/ConvertEnvToBoolean';
+import { Global, Module } from '@nestjs/common';
+import { AppConstants } from './app.constants';
+import { AuthenticationModule } from './modules/authentication/authentication.module';
+import { UserModule } from './modules/user/user.module';
+import { MongoProvider } from './modules/_shared/mongo-custom-provider/MongoProvider';
+import { MysqlProvider } from './modules/_shared/mysql-custom-provider/MysqlProvider';
+import { convertEnvToBoolean } from './modules/_shared/utils/ConvertEnvToBoolean';
 
-import { AppConstants, jwtConstants } from './app.constants';
-
+@Global()
 @Module({
-  controllers: [AuthController, IdentityController],
+  imports: [AuthenticationModule, UserModule],
+  controllers: [],
   providers: [
-    AuthService, //TODO: Mirar como generar un modulo e importarlo aquí para traer el servicio
-    GetUserService,
     {
       provide: AppConstants.MYSQL_POOL,
       useFactory: async () => {
@@ -31,14 +26,7 @@ import { AppConstants, jwtConstants } from './app.constants';
       },
     },
   ],
-  imports: [
-    PassportModule,
-    JwtModule.register({
-      secret: jwtConstants.secret,
-      signOptions: { expiresIn: '3600s' },
-    }),
-  ],
-  exports: [],
+  exports: [AppConstants.MYSQL_POOL, AppConstants.MONGO_POOL],
 })
 export class AppModule {}
 
