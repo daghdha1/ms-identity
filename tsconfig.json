@@ -6,10 +6,10 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
-    "target": "es2017",
+    "target": "es2021",
     "sourceMap": true,
     "outDir": "./dist",
-    "baseUrl": ".",
+    "baseUrl": "./src",
     "incremental": true,
     "skipLibCheck": true,
     "strictNullChecks": false,
@@ -18,9 +18,9 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@infrastructure/*": ["src/infrastructure/*"],
-      "@application/*": ["src/application/*"],
-      "@domain/*": ["src/domain/*"]
+      "@Authentication/*": ["modules/authentication/*"],
+      "@User/*": ["modules/user/*"],
+      "@Shared/*": ["modules/_shared/*"]
     }
   },
   "include": ["src", "test"],
