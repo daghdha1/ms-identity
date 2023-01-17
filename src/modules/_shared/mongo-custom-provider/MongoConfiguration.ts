@@ -1,8 +1,8 @@
 export type MongoConfiguration = {
   name?: string;
-  port?: number;
-  host: string;
   database: string;
+  port: number;
+  host: string;
   user: string;
   password: string;
   maxPoolSize: number;

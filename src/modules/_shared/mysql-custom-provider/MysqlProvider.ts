@@ -4,7 +4,7 @@ import * as mysql from 'mysql2/promise';
 export const MysqlProvider = async (
   config: MysqlConfiguration,
 ): Promise<mysql.Pool> => {
-  const { database, user, password, host, maxConnections, name, port } = config;
+  const { database, host, user, password, maxConnections, name, port } = config;
   const variablesNeeded = [];
   const defaultMaxConnections = 10;
   const poolNameString = name ? ` ${name} ` : ' ';

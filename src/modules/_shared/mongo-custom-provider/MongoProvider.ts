@@ -1,45 +1,49 @@
 import { MongoConfiguration } from './MongoConfiguration';
-import * as mysql from 'mysql2/promise';
+import { MongoClient, ObjectId } from 'mongodb';
 
 export const MongoProvider = async (
   config: MongoConfiguration,
-): Promise<mysql.Pool> => {
-  const { database, user, password, host, maxPoolSize, name, port } = config;
+): Promise<MongoClient> => {
+  const { database, host, user, password, maxPoolSize, name, port } = config;
   const variablesNeeded = [];
-  const defaultMaxConnections = 10;
   const poolNameString = name ? ` ${name} ` : ' ';
-  if (!host || host.trim() === '') variablesNeeded.push('host');
+  let userAndPassFormatted = '';
+
   if (!database || database.trim() === '') variablesNeeded.push('database');
-  if (!user || user.trim() === '') variablesNeeded.push('user');
+  if (!host || host.trim() === '') variablesNeeded.push('host');
+  //if (!user || user.trim() === '') variablesNeeded.push('user');
+  //if (!password || password.trim() === '') variablesNeeded.push('password');
   if (variablesNeeded.length > 0)
     console.log(
-      `Mysql provider needs ${variablesNeeded.join(
+      `Mongo provider needs ${variablesNeeded.join(
         ', ',
       )} to not be empty or undefined`,
     );
-  let pool: mysql.Pool = null;
+  if (user && user.trim().length > 0 && password && password.trim().length > 0)
+    userAndPassFormatted = `${user}${password}@`;
+
+  let pool: MongoClient = null;
   try {
-    pool = mysql.createPool({
-      host,
-      user,
-      database,
-      password,
-      port: port ?? 3306,
-      waitForConnections: true,
-      connectionLimit: maxPoolSize ?? defaultMaxConnections,
-      queueLimit: 0,
-      dateStrings: false,
-    });
-    await pool.query('SELECT 1');
+    const uri = `mongodb://${userAndPassFormatted}${host}:${port}/?maxPoolSize=${maxPoolSize}`;
+    pool = new MongoClient(uri);
+    await pool.connect();
     console.log(
       '\x1b[32m%s\x1b[0m',
-      `Connection pool${poolNameString}(Mysql) created`,
+      `Connection pool${poolNameString}(Mongo) created`,
     );
   } catch (error) {
     console.log(
       '\x1b[31m%s\x1b[0m',
-      `Could not create${poolNameString}connection pool (Mysql)`,
+      `Could not create${poolNameString}connection pool (Mongo)`,
     );
   }
   return pool;
 };
+
+export function getObjectId(id: string): ObjectId {
+  return new ObjectId(id);
+}
+
+export function getIdFromObjectId(obj: ObjectId): string {
+  return obj.toString();
+}

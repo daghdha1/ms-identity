@@ -1,12 +1,12 @@
 export type MysqlConfiguration = {
+  name?: string;
   database: string;
-  user: string;
   port?: number;
-  password: string;
   host: string;
+  user: string;
+  password: string;
   maxConnections: number;
   minConnections?: number;
-  name?: string;
 };
 
 export type MysqlRepositoryConfiguration = {
