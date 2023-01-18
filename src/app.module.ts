@@ -3,8 +3,8 @@ import { AppConstants } from './app.constants';
 import { AuthenticationModule } from './modules/authentication/authentication.module';
 import { UserModule } from './modules/user/user.module';
 import { MongoProvider } from './modules/_shared/mongo-custom-provider/MongoProvider';
-import { convertEnvToBoolean } from './modules/_shared/utils/ConvertEnvToBoolean';
 import { MysqlProvider } from '@Shared/mysql-custom-provider/MysqlProvider';
+import { convertEnvToBoolean } from './modules/_shared/utils/ConvertEnvToBoolean';
 
 @Global()
 @Module({

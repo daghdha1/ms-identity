@@ -6,17 +6,19 @@ import { GetAccessTokenService } from './application/service/GetAccessToken.serv
 import { jwtConstants } from './authentication.constants';
 import { AuthenticationController } from './infrastructure/controller/Authentication.controller';
 
+import { JwtStrategy } from './jwt.strategy';
+
 @Module({
   imports: [
     UserModule,
     PassportModule,
     JwtModule.register({
       secret: jwtConstants.secret,
-      signOptions: { expiresIn: '3600s' },
+      signOptions: { expiresIn: '60s' },
     }),
   ],
   controllers: [AuthenticationController],
-  providers: [GetAccessTokenService],
+  providers: [GetAccessTokenService, JwtStrategy],
   exports: [GetAccessTokenService],
 })
 export class AuthenticationModule {}

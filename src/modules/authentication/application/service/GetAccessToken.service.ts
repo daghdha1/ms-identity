@@ -25,7 +25,6 @@ export class GetAccessTokenService {
     username: string,
     password: string
   ): Promise<AuthUserDataType> {
-    // TODO: 1 - Recoger usuario de User module
     const user: User = await this.getUserService.run({ username });
     console.log(user);
 
