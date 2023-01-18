@@ -17,7 +17,7 @@ export type MongoMongooseConfiguration = {
 }); */
 
 export const MongoMongooseProvider = async (
-  config: MongoMongooseConfiguration,
+  config: MongoMongooseConfiguration
 ) => {
   const {
     host,
@@ -47,12 +47,12 @@ export const MongoMongooseProvider = async (
     await knexPool.select(1);
     console.log(
       '\x1b[32m%s\x1b[0m',
-      `Connection pool${poolNameString}(MysqlKnex) created`,
+      `Connection pool${poolNameString}(MysqlKnex) created`
     );
   } catch (error) {
     console.log(
       '\x1b[31m%s\x1b[0m',
-      `Could not create${poolNameString}connection pool (MysqlKnex)`,
+      `Could not create${poolNameString}connection pool (MysqlKnex)`
     );
     return null;
   }

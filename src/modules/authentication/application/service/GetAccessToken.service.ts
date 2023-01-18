@@ -3,18 +3,19 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { GetUserService } from '@User/application/service/GetUser.service';
 import { User } from '@User/domain/entity/User';
+import { LoginDto } from '../dto/Login.dto';
 
 @Injectable()
 export class GetAccessTokenService {
   constructor(
     private readonly getUserService: GetUserService,
-    private readonly jwtService: JwtService,
+    private readonly jwtService: JwtService
   ) {}
 
-  public async run(username: string, password: string): Promise<string> {
+  public async run(dto: LoginDto): Promise<string> {
     const authUserData: AuthUserDataType = await this.validateUserCredentials(
-      username,
-      password,
+      dto.username,
+      dto.password
     );
     const accessToken: string = this.createAccessToken(authUserData);
     return accessToken;
@@ -22,10 +23,11 @@ export class GetAccessTokenService {
 
   private async validateUserCredentials(
     username: string,
-    password: string,
+    password: string
   ): Promise<AuthUserDataType> {
-    // TODO: 1 - Recoger usuario
-    const user: User = await this.getUserService.run(username, password);
+    // TODO: 1 - Recoger usuario de User module
+    const user: User = await this.getUserService.run({ username });
+    console.log(user);
 
     if (!user || user.password !== password) throw new Error('Incorrect User'); //TODO: Devolver error de login incorrecto
 

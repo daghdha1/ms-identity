@@ -9,6 +9,6 @@ export class UserController {
 
   @Get('getUser')
   public getUser(@Body() dto: GetUserDto): Promise<User> {
-    return this.service.run(dto.username, dto.password);
+    return this.service.run(dto);
   }
 }

@@ -5,14 +5,14 @@ export class HttpRequestException extends BaseException {
     readonly message: string,
     method: string,
     headers: any,
-    body = {},
+    body = {}
   ) {
     super(
       `${message} [METHOD=${method}] [HEADERS=${JSON.stringify(
-        headers,
+        headers
       )}] [body=${body}]`,
       null,
-      404,
+      404
     );
   }
 }

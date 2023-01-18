@@ -5,7 +5,7 @@ export abstract class BaseException extends Error {
     public readonly title: string,
     public readonly detail?: string,
     public readonly detailArgs?: any,
-    public readonly status: number = 400,
+    public readonly status: number = 400
   ) {
     super(title);
     this.timestamp = Date.now();

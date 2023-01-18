@@ -1,10 +1,10 @@
 import { MysqlRepositoryConfiguration } from './MysqlConfiguration';
-import * as mysql from 'mysql2/promise';
+import { Pool } from 'mysql2/promise';
 
 export abstract class MysqlRepository {
   constructor(
-    protected readonly pool: mysql.Pool,
-    private readonly configuration: MysqlRepositoryConfiguration,
+    protected readonly pool: Pool,
+    private readonly configuration: MysqlRepositoryConfiguration
   ) {}
 
   protected async select(query: string): Promise<any[]> {

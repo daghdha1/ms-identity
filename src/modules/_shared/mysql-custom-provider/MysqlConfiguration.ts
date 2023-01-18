@@ -7,6 +7,7 @@ export type MysqlConfiguration = {
   password: string;
   maxConnections: number;
   minConnections?: number;
+  useNullAsDefault?: boolean;
 };
 
 export type MysqlRepositoryConfiguration = {

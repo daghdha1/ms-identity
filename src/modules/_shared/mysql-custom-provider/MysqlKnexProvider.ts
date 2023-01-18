@@ -1,22 +1,12 @@
 import knex from 'knex';
+import { MysqlConfiguration } from './MysqlConfiguration';
 
-export type MysqlKnexConfiguration = {
-  database: string;
-  user: string;
-  port?: number;
-  password: string;
-  useNullAsDefault: boolean;
-  host: string;
-  maxConnections: number;
-  minConnections?: number;
-  name?: string;
-};
-
-export const mysqlKnex = knex({
+export const queryBuilder = knex({
   client: 'mysql2',
+  useNullAsDefault: false,
 });
 
-export const MysqlKnexProvider = async (config: MysqlKnexConfiguration) => {
+export const MysqlKnexProvider = async (config: MysqlConfiguration) => {
   const {
     host,
     database,
@@ -45,12 +35,12 @@ export const MysqlKnexProvider = async (config: MysqlKnexConfiguration) => {
     await knexPool.select(1);
     console.log(
       '\x1b[32m%s\x1b[0m',
-      `Connection pool${poolNameString}(MysqlKnex) created`,
+      `Connection pool${poolNameString}(MysqlKnex) created`
     );
   } catch (error) {
     console.log(
       '\x1b[31m%s\x1b[0m',
-      `Could not create${poolNameString}connection pool (MysqlKnex)`,
+      `Could not create${poolNameString}connection pool (MysqlKnex)`
     );
     return null;
   }

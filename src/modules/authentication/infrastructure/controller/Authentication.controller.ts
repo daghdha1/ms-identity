@@ -9,6 +9,6 @@ export class AuthenticationController {
   @Post('login')
   public login(@Body() dto: LoginDto) {
     console.log(dto);
-    return this.getAccessToken.run(dto.username, dto.password);
+    return this.getAccessToken.run(dto);
   }
 }

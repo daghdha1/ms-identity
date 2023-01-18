@@ -20,18 +20,18 @@ async function bootstrap() {
           origin: process.env.APP_CORS_ORIGIN?.split(','),
           credentials: false,
         },
-      },
+      }
     );
   global.getApp = () => app;
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
   app.setGlobalPrefix(process.env.APP_GLOBAL_PREFIX);
   await app.listen(
     process.env.APP_LISTEN_PORT || 4001,
-    process.env.APP_LISTEN_HOSTNAME || '127.0.0.1',
+    process.env.APP_LISTEN_HOSTNAME || '127.0.0.1'
   );
   console.log(
     '\x1b[36m%s\x1b[0m',
-    `Server listening on ${process.env.APP_LISTEN_HOSTNAME}:${process.env.APP_LISTEN_PORT}`,
+    `Server listening on ${process.env.APP_LISTEN_HOSTNAME}:${process.env.APP_LISTEN_PORT}`
   );
 }
 bootstrap();

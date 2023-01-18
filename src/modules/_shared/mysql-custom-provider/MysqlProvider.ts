@@ -2,7 +2,7 @@ import { MysqlConfiguration } from './MysqlConfiguration';
 import * as mysql from 'mysql2/promise';
 
 export const MysqlProvider = async (
-  config: MysqlConfiguration,
+  config: MysqlConfiguration
 ): Promise<mysql.Pool> => {
   const { database, host, user, password, maxConnections, name, port } = config;
   const variablesNeeded = [];
@@ -14,8 +14,8 @@ export const MysqlProvider = async (
   if (variablesNeeded.length > 0)
     console.log(
       `Mysql provider needs ${variablesNeeded.join(
-        ', ',
-      )} to not be empty or undefined`,
+        ', '
+      )} to not be empty or undefined`
     );
   let pool: mysql.Pool = null;
   try {
@@ -33,12 +33,12 @@ export const MysqlProvider = async (
     await pool.query('SELECT 1');
     console.log(
       '\x1b[32m%s\x1b[0m',
-      `Connection pool${poolNameString}(Mysql) created`,
+      `Connection pool${poolNameString}(Mysql) created`
     );
   } catch (error) {
     console.log(
       '\x1b[31m%s\x1b[0m',
-      `Could not create${poolNameString}connection pool (Mysql)`,
+      `Could not create${poolNameString}connection pool (Mysql)`
     );
   }
   return pool;
