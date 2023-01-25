@@ -1,0 +1,18 @@
+import { IsString } from 'class-validator';
+
+export class CreateUserDto {
+  @IsString()
+  client_id: string;
+  @IsString()
+  client_secret: string;
+  @IsString()
+  username: string;
+  @IsString()
+  encrypted_password: string;
+  @IsString()
+  organization_name: string;
+  @IsString()
+  phone: string;
+  @IsString()
+  email: string;
+}

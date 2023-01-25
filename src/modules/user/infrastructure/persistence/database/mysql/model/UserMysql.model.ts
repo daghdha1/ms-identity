@@ -8,6 +8,7 @@ export class UserMysqlModel {
   organization_name: string;
   phone: string;
   email: string;
+  api_key: string;
 
   public static toEntity(model: UserMysqlModel): User {
     return partialAssign(new User(), {
@@ -17,6 +18,7 @@ export class UserMysqlModel {
       organizationName: model.organization_name,
       phone: model.phone,
       email: model.email,
+      apiKey: model.api_key,
     });
   }
 }

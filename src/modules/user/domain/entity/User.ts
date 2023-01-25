@@ -5,4 +5,5 @@ export class User {
   public organizationName: string;
   public phone: string;
   public email: string;
+  public apiKey: string;
 }
