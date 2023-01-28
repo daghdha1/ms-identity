@@ -1,6 +1,9 @@
-import { IsString } from 'class-validator';
+import { IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateUserDto {
+  @IsOptional()
+  @IsNumber()
+  uid?: number;
   @IsString()
   client_id: string;
   @IsString()
@@ -8,7 +11,7 @@ export class CreateUserDto {
   @IsString()
   username: string;
   @IsString()
-  encrypted_password: string;
+  password: string;
   @IsString()
   organization_name: string;
   @IsString()

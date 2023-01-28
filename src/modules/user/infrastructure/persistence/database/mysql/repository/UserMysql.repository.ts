@@ -16,7 +16,7 @@ export class UserMysqlRepository
     @Inject(AppConstants.MYSQL_POOL)
     protected pool: Pool
   ) {
-    super(pool, { debug: true });
+    super(pool, { debug: false });
   }
 
   public async getUser(username: string): Promise<User> {
@@ -27,6 +27,18 @@ export class UserMysqlRepository
       .toString();
     const model: UserMysqlModel = await this.selectOne(query);
     return UserMysqlModel.toEntity(model);
+  }
+
+  public async createUser(user: User): Promise<boolean> {
+    const model: UserMysqlModel = UserMysqlModel.fromEntity(user);
+    const query = queryBuilder
+      .table(UserConstants.MYSQL_USER_PROFILE_TABLE)
+      .insert(model)
+      .onConflict(['username', 'email'])
+      .ignore()
+      .toString();
+    await this.insert(query);
+    return true;
   }
 }
 

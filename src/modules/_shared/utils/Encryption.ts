@@ -1,50 +1,65 @@
 import * as bcrypt from 'bcrypt';
 import * as crypto from 'crypto';
 
-export const encryptStrWithBcrypt = async (str: string) => bcrypt.hash(str, 10);
+export const hashStr = async (str: string) => bcrypt.hash(str, 10);
 
-export const compareTwoStrWithBcrypt = async (
-  strTarget: string,
-  strSaved: string
-) => bcrypt.compare(strTarget, strSaved);
-
-export const encryptStrWithCrypto = (
-  strTarget: string,
-  pwEncrypted: string
+export const compareStrWithStrHashed = async (
+  str: string,
+  strHashed: string
 ) => {
+  return bcrypt.compare(str, strHashed);
+};
+
+export const encryptStr = (strTarget: string, pwHashed: string) => {
   const initVector = Buffer.from(process.env.CRYPTO_INIT_HEX_VECTOR, 'hex');
-  const securityKey = Buffer.from(pwEncrypted, 'hex');
-  console.log(securityKey)
+  const securityKey = Buffer.from(pwHashed.substring(0, 32), 'utf8');
   const cipher = crypto.createCipheriv(
     process.env.CRYPTO_ALGORITHM,
     securityKey,
     initVector
   );
-  let strEncrypted = cipher.update(strTarget, 'utf-8', 'hex');
-  strEncrypted += cipher.final('hex');
+  let strEncrypted = cipher.update(strTarget, 'hex', 'base64');
+  strEncrypted += cipher.final('base64');
   return strEncrypted;
 };
 
-export const decryptStrWithCrypto = (
-  strEncrypted: string,
-  pwEncrypted: string
-) => {
+export const decryptStr = (strTarget: string, pwHashed: string) => {
   const initVector = Buffer.from(process.env.CRYPTO_INIT_HEX_VECTOR, 'hex');
-  const securityKey = Buffer.from(pwEncrypted, 'hex');
+  const securityKey = Buffer.from(pwHashed.substring(0, 32), 'utf8');
   const decipher = crypto.createDecipheriv(
     process.env.CRYPTO_ALGORITHM,
     securityKey,
     initVector
   );
-  let strDecrypted = decipher.update(strEncrypted, 'hex', 'utf-8');
-  strDecrypted += decipher.final('utf8');
+  let strDecrypted = decipher.update(strTarget, 'base64', 'hex');
+  strDecrypted += decipher.final('hex');
   return strDecrypted;
 };
 
-export const generateRandomHex = (length: number) =>
-  crypto.randomBytes(length).toString('hex');
+export const generateRandomBytes = (lenght: number) => {
+  return crypto.randomBytes(lenght);
+};
 
-export const stretchStr = (str: string, outputLength: number) => {
-  const salt = crypto.randomBytes(16);
-  return crypto.pbkdf2Sync(str, salt, 100000, outputLength, 'sha512');
+export const generateRandomUtf8 = (length: number) => {
+  return crypto.randomBytes(length).toString('utf-8');
+};
+
+export const generateRandomHex = (length: number) => {
+  return crypto.randomBytes(length).toString('hex');
+};
+
+// weak pass (utf-8) --> stretchString(Buffer) --> hex --> hash
+export const stretchStr = (
+  str: string,
+  outputLength: number,
+  customSalt?: Buffer,
+  algorithm?: string
+) => {
+  return crypto.pbkdf2Sync(
+    str,
+    customSalt ?? crypto.randomBytes(16),
+    100000,
+    outputLength,
+    algorithm ?? 'sha512'
+  );
 };

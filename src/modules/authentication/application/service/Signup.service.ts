@@ -4,11 +4,9 @@ import { SignupDto } from '../dto/Signup.dto';
 
 import { CreateUserDto } from '@User/application/dto/CreateUser.dto';
 import {
-  decryptStrWithCrypto,
-  encryptStrWithBcrypt,
-  encryptStrWithCrypto,
+  hashStr,
+  encryptStr,
   generateRandomHex,
-  stretchStr,
 } from '@Shared/utils/Encryption';
 
 @Injectable()
@@ -16,38 +14,16 @@ export class SignupService {
   constructor(private readonly createUserService: CreateUserService) {}
 
   public async run(dto: SignupDto): Promise<boolean> {
-    console.log(dto);
-    // Generate encrypted password
-    // utf-8 (weak pass) --> stretchString(Buffer 32 bytes) --> hex --> hash
-    const pwStretched: string = stretchStr(dto.password, 32).toString('hex', 0, 32);
-    console.log(pwStretched.length);
-    const pwEncrypted: string = await encryptStrWithBcrypt(pwStretched);
-    console.log('Password hash with bcrypt: ' + pwEncrypted);
-    // TODO: Save encrypted password in database
+    const pwHashed: string = await hashStr(dto.password);
+    const clientId = generateRandomHex(32);
+    const clientSecret = generateRandomHex(32);
+    const clientSecretEncrypted: string = encryptStr(clientSecret, pwHashed);
 
-    // Generate new clientId and clientSecret
-    const clientId = generateRandomHex(16);
-    const clientSecret = generateRandomHex(16);
-    // Encrypt clientSecret with stretched password
-    const clientSecretEncrypted: string = encryptStrWithCrypto(
-      clientSecret,
-      pwStretched
-    );
-    // TODO: Save encrypted clientSecret in database
-
-    const clientSecretDecrypted: string = decryptStrWithCrypto(
-      clientSecretEncrypted,
-      pwStretched
-    );
-    console.log('ClientId: ' + clientId);
-    console.log('ClientSecret: ' + clientSecret);
-    console.log('ClientSecret encrypted: ' + clientSecretEncrypted);
-    console.log('ClientSecret decrypted: ' + clientSecretDecrypted);
     const payload: CreateUserDto = {
       client_id: clientId,
-      client_secret: clientSecret,
+      client_secret: clientSecretEncrypted,
       username: dto.username,
-      encrypted_password: pwEncrypted,
+      password: pwHashed,
       organization_name: dto.organization_name,
       phone: dto.phone,
       email: dto.email,
@@ -56,3 +32,11 @@ export class SignupService {
     return isUserRegistered;
   }
 }
+
+/* const salt: Buffer = generateRandomBytes(16);
+    const pwStretched: string = stretchStr(
+      dto.password,
+      32,
+      salt,
+      'sha512'
+    ).toString('hex'); */

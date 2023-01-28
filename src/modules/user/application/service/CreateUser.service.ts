@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { User } from '@User/domain/entity/User';
 import { UserRepository } from '@User/domain/repository/User.repository';
 import { CreateUserDto } from '../dto/CreateUser.dto';
 
@@ -7,9 +8,8 @@ export class CreateUserService {
   constructor(private readonly userRepo: UserRepository) {}
 
   public async run(dto: CreateUserDto): Promise<boolean> {
-    console.log(dto);
-    // TODO: Pass this obj to entity and pass to repo to save it
-    //const isUserCreated: boolean = await this.userRepo.createUser(user);
-    return null;
+    const user: User = User.create(dto);
+    const isUserCreated: boolean = await this.userRepo.createUser(user);
+    return isUserCreated;
   }
 }
