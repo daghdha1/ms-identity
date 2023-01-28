@@ -1,4 +1,4 @@
-import { LoginException } from '@Authentication/domain/exception/LoginException';
+import { SigninException } from '@Authentication/domain/exception/SigninException';
 import { Injectable } from '@nestjs/common';
 import { compareStrWithStrHashed } from '@Shared/utils/Encryption';
 import { GetUserService } from '@User/application/service/GetUser.service';
@@ -9,6 +9,7 @@ import { SigninDto } from '../dto/Signin.dto';
 export class SigninService {
   constructor(private readonly getUserService: GetUserService) {}
 
+  //TODO: Hay que devolver el client_id y el client_secret al usuario
   public async run(dto: SigninDto): Promise<any> {
     try {
       const user: User = await this.getUserService.run({
@@ -20,7 +21,7 @@ export class SigninService {
       );
       return isValidPassword;
     } catch (error) {
-      throw new LoginException('Login error', 'POST', null, {});
+      throw new SigninException('Login error', 'POST', null, {});
     }
   }
 }

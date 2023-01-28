@@ -1,3 +1,4 @@
 export type AuthUserDataType = {
-  clientId: string;
+  uid: number;
+  username: string;
 };

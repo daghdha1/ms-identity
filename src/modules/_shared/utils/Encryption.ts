@@ -10,9 +10,9 @@ export const compareStrWithStrHashed = async (
   return bcrypt.compare(str, strHashed);
 };
 
-export const encryptStr = (strTarget: string, pwHashed: string) => {
+export const encryptStr = (strTarget: string, strHashed: string) => {
   const initVector = Buffer.from(process.env.CRYPTO_INIT_HEX_VECTOR, 'hex');
-  const securityKey = Buffer.from(pwHashed.substring(0, 32), 'utf8');
+  const securityKey = Buffer.from(strHashed.substring(0, 32), 'utf8');
   const cipher = crypto.createCipheriv(
     process.env.CRYPTO_ALGORITHM,
     securityKey,
@@ -23,9 +23,9 @@ export const encryptStr = (strTarget: string, pwHashed: string) => {
   return strEncrypted;
 };
 
-export const decryptStr = (strTarget: string, pwHashed: string) => {
+export const decryptStr = (strTarget: string, strHashed: string) => {
   const initVector = Buffer.from(process.env.CRYPTO_INIT_HEX_VECTOR, 'hex');
-  const securityKey = Buffer.from(pwHashed.substring(0, 32), 'utf8');
+  const securityKey = Buffer.from(strHashed.substring(0, 32), 'utf8');
   const decipher = crypto.createDecipheriv(
     process.env.CRYPTO_ALGORITHM,
     securityKey,
@@ -63,3 +63,14 @@ export const stretchStr = (
     algorithm ?? 'sha512'
   );
 };
+
+// call strtch
+/* 
+const salt: Buffer = generateRandomBytes(16);
+const pwStretched: string = stretchStr(
+    dto.password,
+    32,
+    salt,
+    'sha512'
+).toString('hex'); 
+*/

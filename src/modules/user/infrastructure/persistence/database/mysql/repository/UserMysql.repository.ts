@@ -19,10 +19,20 @@ export class UserMysqlRepository
     super(pool, { debug: false });
   }
 
-  public async getUser(username: string): Promise<User> {
+  public async getUserByName(username: string): Promise<User> {
     const query = queryBuilder
       .table(UserConstants.MYSQL_USER_PROFILE_TABLE)
       .where({ username })
+      .select()
+      .toString();
+    const model: UserMysqlModel = await this.selectOne(query);
+    return UserMysqlModel.toEntity(model);
+  }
+
+  public async getUserByClientId(clientId: string): Promise<User> {
+    const query = queryBuilder
+      .table(UserConstants.MYSQL_USER_PROFILE_TABLE)
+      .where({ id_client: clientId })
       .select()
       .toString();
     const model: UserMysqlModel = await this.selectOne(query);

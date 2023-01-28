@@ -1,21 +1,21 @@
 import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { SigninDto } from '@Authentication/application/dto/Signin.dto';
 import { SignupDto } from '@Authentication/application/dto/Signup.dto';
-//import { TokenDto } from '@Authentication/application/dto/Token.dto';
-//import { TokenService } from '@Authentication/application/service/Token.service';
-//import { TokenResponseDto } from '@Authentication/infrastructure/dto/TokenResponse.dto';
+import { ApiAuthDto } from '@Authentication/application/dto/ApiAuth.dto';
+import { TokenResponseDto } from '@Authentication/infrastructure/dto/TokenResponse.dto';
 import { JwtGuard } from '@Authentication/jwt.guard';
 import { BaseHttpResponse } from '@Shared/response/BaseHttp.response';
 import { SignupService } from '@Authentication/application/service/Signup.service';
 import { SigninService } from '@Authentication/application/service/Signin.service';
+import { ApiService } from '@Authentication/application/service/Api.service';
 
 @Controller('auth')
 export class AuthenticationController extends BaseHttpResponse {
   constructor(
     private readonly signupService: SignupService,
-    private readonly signinService: SigninService
-  ) //private readonly tokenService: TokenService
-  {
+    private readonly signinService: SigninService,
+    private readonly apiService: ApiService
+  ) {
     super();
   }
 
@@ -31,11 +31,11 @@ export class AuthenticationController extends BaseHttpResponse {
     return this.success(response);
   }
 
-  /* @Post('token')
-  public async token(@Body() dto: TokenDto) {
-    const response: TokenResponseDto = await this.tokenService.run(dto);
+  @Post('api')
+  public async api(@Body() dto: ApiAuthDto) {
+    const response: TokenResponseDto = await this.apiService.run(dto);
     return this.success(response);
-  } */
+  }
 
   @UseGuards(JwtGuard)
   @Get('resource')

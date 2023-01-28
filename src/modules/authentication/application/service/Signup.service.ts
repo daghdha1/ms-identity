@@ -17,6 +17,7 @@ export class SignupService {
     const pwHashed: string = await hashStr(dto.password);
     const clientId = generateRandomHex(32);
     const clientSecret = generateRandomHex(32);
+    console.log('clientSecret created: ' + clientSecret);
     const clientSecretEncrypted: string = encryptStr(clientSecret, pwHashed);
 
     const payload: CreateUserDto = {
@@ -32,11 +33,3 @@ export class SignupService {
     return isUserRegistered;
   }
 }
-
-/* const salt: Buffer = generateRandomBytes(16);
-    const pwStretched: string = stretchStr(
-      dto.password,
-      32,
-      salt,
-      'sha512'
-    ).toString('hex'); */

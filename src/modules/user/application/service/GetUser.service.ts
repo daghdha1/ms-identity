@@ -8,7 +8,9 @@ export class GetUserService {
   constructor(private readonly userRepo: UserRepository) {}
 
   public async run(dto: GetUserDto): Promise<User> {
-    const user: User = await this.userRepo.getUser(dto.username);
+    let user: User = null;
+    if (dto.username) user = await this.userRepo.getUserByName(dto.username);
+    else user = await this.userRepo.getUserByClientId(dto.client_id);
     return user;
   }
 }
