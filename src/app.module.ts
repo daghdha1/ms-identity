@@ -5,6 +5,7 @@ import { UserModule } from './modules/user/user.module';
 import { MongoProvider } from './modules/_shared/mongo-custom-provider/MongoProvider';
 import { MysqlProvider } from '@Shared/mysql-custom-provider/MysqlProvider';
 import { convertEnvToBoolean } from './modules/_shared/utils/ConvertEnvToBoolean';
+import { RedisProvider } from '@Shared/redis-custom-provider/RedisProvider';
 
 @Global()
 @Module({
@@ -43,7 +44,18 @@ import { convertEnvToBoolean } from './modules/_shared/utils/ConvertEnvToBoolean
         });
       },
     },
+    {
+      provide: AppConstants.REDIS_POOL,
+      useFactory: async () => {
+        if (!convertEnvToBoolean(process.env.REDIS_ACTIVE)) return null;
+        return RedisProvider();
+      },
+    },
   ],
-  exports: [AppConstants.MYSQL_POOL, AppConstants.MONGO_POOL],
+  exports: [
+    AppConstants.MYSQL_POOL,
+    AppConstants.MONGO_POOL,
+    AppConstants.REDIS_POOL,
+  ],
 })
 export class AppModule {}

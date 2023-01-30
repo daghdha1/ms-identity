@@ -7,14 +7,14 @@ import { JwtGuard } from '@Authentication/jwt.guard';
 import { BaseHttpResponse } from '@Shared/response/BaseHttp.response';
 import { SignupService } from '@Authentication/application/service/Signup.service';
 import { SigninService } from '@Authentication/application/service/Signin.service';
-import { ApiService } from '@Authentication/application/service/Api.service';
+import { ApiAuthService } from '@Authentication/application/service/ApiAuth.service';
 
 @Controller('auth')
 export class AuthenticationController extends BaseHttpResponse {
   constructor(
     private readonly signupService: SignupService,
     private readonly signinService: SigninService,
-    private readonly apiService: ApiService
+    private readonly apiAuthService: ApiAuthService
   ) {
     super();
   }
@@ -31,9 +31,9 @@ export class AuthenticationController extends BaseHttpResponse {
     return this.success(response);
   }
 
-  @Post('api')
-  public async api(@Body() dto: ApiAuthDto) {
-    const response: TokenResponseDto = await this.apiService.run(dto);
+  @Post('token')
+  public async token(@Body() dto: ApiAuthDto) {
+    const response: TokenResponseDto = await this.apiAuthService.run(dto);
     return this.success(response);
   }
 

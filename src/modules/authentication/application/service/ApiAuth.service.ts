@@ -7,12 +7,15 @@ import { User } from '@User/domain/entity/User';
 import { ApiAuthDto } from '../dto/ApiAuth.dto';
 import { decryptStr } from '@Shared/utils/Encryption';
 import { ApiAuthException } from '@Authentication/domain/exception/ApiAuthException';
+import { TokenRepository } from '@Authentication/domain/repository/Token.repository';
+import { jwtConstants } from '@Authentication/authentication.constants';
 
 @Injectable()
-export class ApiService {
+export class ApiAuthService {
   constructor(
     private readonly getUserService: GetUserService,
-    private readonly jwtService: JwtService
+    private readonly jwtService: JwtService,
+    private readonly tokenRepository: TokenRepository
   ) {}
 
   public async run(dto: ApiAuthDto): Promise<TokenResponseType> {
@@ -20,12 +23,20 @@ export class ApiService {
       dto.client_id,
       dto.client_secret
     );
-    // TODO: Apply gran_type logic to retrieve tokens at first time or from refresh_token ??
+
+    let accessToken: string = await this.tokenRepository.getAccessToken(
+      dto.client_id
+    );
+    if (!accessToken) {
+      accessToken = this.createAccessToken(userData);
+      const isSaved: boolean = await this.saveAccessToken(dto.client_id, accessToken);
+      if (!isSaved) throw new ApiAuthException('An authentication error has ocurred', null, null);
+    }
+
     return {
-      access_token: this.createAccessToken(userData),
-      refresh_token: this.createRefreshToken(),
+      access_token: accessToken,
       token_type: 'Bearer',
-      expires_in: 3600,
+      expires_in: Number(jwtConstants.expires_in),
     };
   }
 
@@ -43,17 +54,15 @@ export class ApiService {
   }
 
   private isValidClientSecret(clientSecret: string, user: User): boolean {
-    console.log('client secret input: ' + clientSecret);
     const clientSecretDecrypted: string = decryptStr(
       user.clientSecret,
       user.password
     );
-    console.log('client secret decrypted: ' + clientSecretDecrypted);
     return clientSecret === clientSecretDecrypted;
   }
 
-  private createAccessToken(authUser: AuthUserDataType): string {
-    const payload = { username: authUser.username, sub: authUser.uid };
+  private createAccessToken(userData: AuthUserDataType): string {
+    const payload = { username: userData.username, sub: userData.uid };
     return this.jwtService.sign(payload);
   }
 
@@ -61,8 +70,15 @@ export class ApiService {
     return null;
   }
 
-  public createRefreshToken() {
-    return 'empty';
+  private async saveAccessToken(
+    clientId: string,
+    accessToken: string
+  ): Promise<boolean> {
+    return this.tokenRepository.saveAccessToken(
+      clientId,
+      accessToken,
+      Number(jwtConstants.expires_in)
+    );
   }
 }
 
