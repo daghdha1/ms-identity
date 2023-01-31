@@ -1,6 +1,6 @@
 import { IsString } from 'class-validator';
 
-export class ApiAuthDto {
+export class TokenDto {
   @IsString()
   client_id: string;
   @IsString()

@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { SigninDto } from '@Authentication/application/dto/Signin.dto';
 import { SignupDto } from '@Authentication/application/dto/Signup.dto';
-import { ApiAuthDto } from '@Authentication/application/dto/ApiAuth.dto';
+import { TokenDto } from '@Authentication/application/dto/Token.dto';
 import { TokenResponseDto } from '@Authentication/infrastructure/dto/TokenResponse.dto';
 import { JwtGuard } from '@Authentication/jwt.guard';
 import { BaseHttpResponse } from '@Shared/response/BaseHttp.response';
@@ -32,7 +32,7 @@ export class AuthenticationController extends BaseHttpResponse {
   }
 
   @Post('token')
-  public async token(@Body() dto: ApiAuthDto) {
+  public async token(@Body() dto: TokenDto) {
     const response: TokenResponseDto = await this.apiAuthService.run(dto);
     return this.success(response);
   }

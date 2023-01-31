@@ -7,22 +7,17 @@ export abstract class RedisRepository {
     private readonly configuration: RedisRepositoryConfiguration
   ) {}
 
-  protected async get(key: string): Promise<any | undefined> {
-    if (this.configuration.debug) console.log(key);
-    const start = performance.now();
-    const value = await this.pool.get(key);
-    if (this.configuration.debug) console.log(performance.now() - start);
-    return value ?? undefined;
+  protected async get(key: string): Promise<string | undefined> {
+    if (this.configuration.debug) console.log(`key path: ${key}`);
+    return this.pool.get(key) ?? undefined;
   }
 
-  protected async set(key: string, value: any, expiresIn: number): Promise<string> {
-    if (this.configuration.debug) {
-      console.log(key);
-      console.log(value);
-    }
-    const start = performance.now();
-    const response = await this.pool.set(key, value, { EX: expiresIn });
-    if (this.configuration.debug) console.log(performance.now() - start);
-    return response;
+  protected async set(
+    key: string,
+    value: string,
+    expiresIn: number
+  ): Promise<string> {
+    if (this.configuration.debug) console.log(`key path: ${key} \nvalue: ${value}`);
+    return this.pool.set(key, value, { EX: expiresIn });
   }
 }

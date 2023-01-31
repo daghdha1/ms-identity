@@ -4,7 +4,7 @@ import { TokenResponseType } from '@Authentication/domain/types/TokenResponse.ty
 import { JwtService } from '@nestjs/jwt';
 import { GetUserService } from '@User/application/service/GetUser.service';
 import { User } from '@User/domain/entity/User';
-import { ApiAuthDto } from '../dto/ApiAuth.dto';
+import { TokenDto } from '../dto/Token.dto';
 import { decryptStr } from '@Shared/utils/Encryption';
 import { ApiAuthException } from '@Authentication/domain/exception/ApiAuthException';
 import { TokenRepository } from '@Authentication/domain/repository/Token.repository';
@@ -18,7 +18,7 @@ export class ApiAuthService {
     private readonly tokenRepository: TokenRepository
   ) {}
 
-  public async run(dto: ApiAuthDto): Promise<TokenResponseType> {
+  public async run(dto: TokenDto): Promise<TokenResponseType> {
     const userData: AuthUserDataType = await this.validateUser(
       dto.client_id,
       dto.client_secret
@@ -76,8 +76,7 @@ export class ApiAuthService {
   ): Promise<boolean> {
     return this.tokenRepository.saveAccessToken(
       clientId,
-      accessToken,
-      Number(jwtConstants.expires_in)
+      accessToken
     );
   }
 }
