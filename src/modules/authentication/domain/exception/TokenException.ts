@@ -1,6 +1,6 @@
 import { BaseException } from '@Shared/exception/Base.exception';
 
-export class ApiAuthException extends BaseException {
+export class TokenException extends BaseException {
   constructor(
     readonly message: string,
     method: string,

@@ -1,4 +1,4 @@
-export type AuthUserDataType = {
+export type JwtDataType = {
   uid: number;
   username: string;
 };

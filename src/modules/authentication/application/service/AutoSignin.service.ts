@@ -2,36 +2,25 @@ import { SigninException } from '@Authentication/domain/exception/SigninExceptio
 import { TokenRepository } from '@Authentication/domain/repository/Token.repository';
 import { SigninResponseType } from '@Authentication/domain/types/SigninResponse.type';
 import { Injectable } from '@nestjs/common';
-import {
-  compareStrWithStrHashed,
-  decryptStr,
-  generateRandomHex,
-} from '@Shared/utils/Encryption';
+import { decryptStr } from '@Shared/utils/Encryption';
 import { GetUserService } from '@User/application/service/GetUser.service';
 import { User } from '@User/domain/entity/User';
-import { SigninDto } from '../dto/Signin.dto';
+import { AutoSigninDto } from '../dto/AutoSignin.dto';
 
 @Injectable()
-export class SigninService {
+export class AutoSigninService {
   constructor(
     private readonly getUserService: GetUserService,
     private readonly tokenRepository: TokenRepository
   ) {}
-
-  public async run(dto: SigninDto): Promise<SigninResponseType> {
+  public async run(dto: AutoSigninDto): Promise<SigninResponseType | undefined> {
+    const refreshToken: string = await this.tokenRepository.getRefreshToken(
+      dto.username
+    );
+    if (!refreshToken || refreshToken !== dto.refresh_token) throw new SigninException('Unauthorized', null, {});
     const user: User = await this.getUserService.run({
       username: dto.username,
     });
-
-    const isValidPassword: boolean = await compareStrWithStrHashed(
-      dto.password,
-      user.password
-    );
-    if (!isValidPassword) throw new SigninException('Unauthorized', null, {});
-
-    const refreshToken: string = generateRandomHex(32);
-    await this.tokenRepository.saveRefreshToken(dto.username, refreshToken);
-
     return {
       client_id: user.clientId,
       client_secret: decryptStr(user.clientSecret, user.password),

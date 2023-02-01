@@ -10,9 +10,9 @@ export const compareStrWithStrHashed = async (
   return bcrypt.compare(str, strHashed);
 };
 
-export const encryptStr = (strTarget: string, strHashed: string) => {
+export const encryptStr = (strTarget: string, hash: string) => {
   const initVector = Buffer.from(process.env.CRYPTO_INIT_HEX_VECTOR, 'hex');
-  const securityKey = Buffer.from(strHashed.substring(0, 32), 'utf8');
+  const securityKey = Buffer.from(hash.substring(0, 32), 'utf8');
   const cipher = crypto.createCipheriv(
     process.env.CRYPTO_ALGORITHM,
     securityKey,
@@ -23,9 +23,9 @@ export const encryptStr = (strTarget: string, strHashed: string) => {
   return strEncrypted;
 };
 
-export const decryptStr = (strTarget: string, strHashed: string) => {
+export const decryptStr = (strTarget: string, hash: string) => {
   const initVector = Buffer.from(process.env.CRYPTO_INIT_HEX_VECTOR, 'hex');
-  const securityKey = Buffer.from(strHashed.substring(0, 32), 'utf8');
+  const securityKey = Buffer.from(hash.substring(0, 32), 'utf8');
   const decipher = crypto.createDecipheriv(
     process.env.CRYPTO_ALGORITHM,
     securityKey,

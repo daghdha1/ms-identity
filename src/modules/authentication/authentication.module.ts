@@ -2,7 +2,8 @@ import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { UserModule } from '@User/user.module';
-import { ApiAuthService } from './application/service/ApiAuth.service';
+import { AutoSigninService } from './application/service/AutoSignin.service';
+import { GetAccessTokenService } from './application/service/GetAccessToken.service';
 import { SigninService } from './application/service/Signin.service';
 import { SignupService } from './application/service/Signup.service';
 import { jwtConstants } from './authentication.constants';
@@ -24,7 +25,8 @@ import { JwtStrategy } from './jwt.strategy';
   providers: [
     SignupService,
     SigninService,
-    ApiAuthService,
+    AutoSigninService,
+    GetAccessTokenService,
     JwtStrategy,
     {
       provide: TokenRepository,
