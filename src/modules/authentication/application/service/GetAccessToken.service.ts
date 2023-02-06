@@ -3,7 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { GetUserService } from '@User/application/service/GetUser.service';
 import { User } from '@User/domain/entity/User';
 import { GetAccessTokenDto } from '../dto/GetAccessToken.dto';
-import { decryptStr } from '@Shared/utils/Encryption';
+import { decryptStr } from 'pkg-shared';
 import { TokenException } from '@Authentication/domain/exception/TokenException';
 import { jwtConstants } from '@Authentication/authentication.constants';
 import { JwtDataType } from '@Authentication/domain/types/JwtData.type';
@@ -35,9 +35,10 @@ export class GetAccessTokenService {
     clientSecret: string
   ): Promise<JwtDataType | undefined> {
     const user: User = await this.getUserService.run({ client_id: clientId });
-    if (!user || !this.isValidClientSecret(clientSecret, user)) return undefined;
+    if (!user || !this.isValidClientSecret(clientSecret, user))
+      return undefined;
     return { uid: user.uid, username: user.username };
-  } 
+  }
 
   private isValidClientSecret(clientSecret: string, user: User): boolean {
     const clientSecretDecrypted: string = decryptStr(

@@ -3,7 +3,6 @@ import { SigninDto } from '@Authentication/application/dto/Signin.dto';
 import { SignupDto } from '@Authentication/application/dto/Signup.dto';
 import { GetAccessTokenDto } from '@Authentication/application/dto/GetAccessToken.dto';
 import { JwtGuard } from '@Authentication/jwt.guard';
-import { BaseHttpResponse } from '@Shared/response/BaseHttp.response';
 import { SignupService } from '@Authentication/application/service/Signup.service';
 import { SigninService } from '@Authentication/application/service/Signin.service';
 import { GetAccessTokenService } from '@Authentication/application/service/GetAccessToken.service';
@@ -11,6 +10,7 @@ import { AutoSigninService } from '@Authentication/application/service/AutoSigni
 import { AutoSigninDto } from '@Authentication/application/dto/AutoSignin.dto';
 import { SigninResponseDto } from '../dto/SigninResponse.dto';
 import { AccessTokenResponseDto } from '../dto/AccessTokenResponse.dto';
+import { BaseHttpResponse } from 'pkg-shared';
 
 @Controller('auth')
 export class AuthenticationController extends BaseHttpResponse {

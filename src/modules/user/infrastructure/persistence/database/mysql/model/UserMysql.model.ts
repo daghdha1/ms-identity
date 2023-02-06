@@ -1,5 +1,5 @@
-import { partialAssign } from '@Shared/utils/PartialAssign';
 import { User } from '@User/domain/entity/User';
+import { partialAssign } from 'pkg-shared';
 
 export class UserMysqlModel {
   uid: number;

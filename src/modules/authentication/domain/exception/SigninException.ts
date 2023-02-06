@@ -1,4 +1,4 @@
-import { BaseException } from '@Shared/exception/Base.exception';
+import { BaseException } from "pkg-shared";
 
 export class SigninException extends BaseException {
   constructor(

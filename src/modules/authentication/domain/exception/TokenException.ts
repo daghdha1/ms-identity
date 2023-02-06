@@ -1,4 +1,5 @@
-import { BaseException } from '@Shared/exception/Base.exception';
+import { BaseException } from "pkg-shared";
+
 
 export class TokenException extends BaseException {
   constructor(

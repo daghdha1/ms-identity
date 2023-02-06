@@ -1,12 +1,11 @@
 import { Inject } from '@nestjs/common';
 import { Pool } from 'mysql2/promise';
-import { MysqlRepository } from '@Shared/mysql-custom-provider/MysqlRepository';
-import { queryBuilder } from '@Shared/mysql-custom-provider/MysqlKnexProvider';
 import { UserRepository } from '@User/domain/repository/User.repository';
 import { UserMysqlModel } from '../model/UserMysql.model';
 import { User } from '@User/domain/entity/User';
 import { UserConstants } from '@User/user.constants';
 import { AppConstants } from 'app.constants';
+import { MysqlRepository, queryBuilder } from 'pkg-shared';
 
 export class UserMysqlRepository
   extends MysqlRepository

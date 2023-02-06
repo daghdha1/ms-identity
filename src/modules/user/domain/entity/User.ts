@@ -1,5 +1,5 @@
-import { partialAssign } from '@Shared/utils/PartialAssign';
 import { CreateUserDto } from '@User/application/dto/CreateUser.dto';
+import { partialAssign } from 'pkg-shared';
 
 export class User {
   public uid: number;

@@ -6,7 +6,7 @@ import {
   compareStrWithStrHashed,
   decryptStr,
   generateRandomHex,
-} from '@Shared/utils/Encryption';
+} from 'pkg-shared';
 import { GetUserService } from '@User/application/service/GetUser.service';
 import { User } from '@User/domain/entity/User';
 import { SigninDto } from '../dto/Signin.dto';

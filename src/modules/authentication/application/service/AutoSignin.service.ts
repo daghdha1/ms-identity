@@ -2,7 +2,7 @@ import { SigninException } from '@Authentication/domain/exception/SigninExceptio
 import { TokenRepository } from '@Authentication/domain/repository/Token.repository';
 import { SigninResponseType } from '@Authentication/domain/types/SigninResponse.type';
 import { Injectable } from '@nestjs/common';
-import { decryptStr } from '@Shared/utils/Encryption';
+import { decryptStr } from 'pkg-shared';
 import { GetUserService } from '@User/application/service/GetUser.service';
 import { User } from '@User/domain/entity/User';
 import { AutoSigninDto } from '../dto/AutoSignin.dto';

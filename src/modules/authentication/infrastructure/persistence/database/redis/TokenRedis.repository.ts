@@ -1,8 +1,8 @@
 import { TokenRepository } from '@Authentication/domain/repository/Token.repository';
 import { Inject } from '@nestjs/common';
 import { RedisClientType } from '@redis/client';
-import { RedisRepository } from '@Shared/redis-custom-provider/RedisRepository';
 import { AppConstants } from 'app.constants';
+import { RedisRepository } from 'pkg-shared';
 
 export class TokenRedisRepository extends RedisRepository implements TokenRepository {
   constructor(

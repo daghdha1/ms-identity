@@ -7,7 +7,7 @@ import {
   hashStr,
   encryptStr,
   generateRandomHex,
-} from '@Shared/utils/Encryption';
+} from 'pkg-shared'
 
 @Injectable()
 export class SignupService {
