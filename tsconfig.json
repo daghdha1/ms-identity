@@ -19,8 +19,7 @@
     "noFallthroughCasesInSwitch": false,
     "paths": {
       "@Authentication/*": ["modules/authentication/*"],
-      "@User/*": ["modules/user/*"],
-      "@Shared/*": ["modules/_shared/*"]
+      "@User/*": ["modules/user/*"]
     }
   },
   "include": ["src", "test"],

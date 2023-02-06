@@ -1,10 +1,8 @@
 import { Global, Module } from '@nestjs/common';
+import { convertEnvToBoolean, MongoProvider, MysqlProvider } from 'pkg-shared';
 import { AppConstants } from './app.constants';
 import { AuthenticationModule } from './modules/authentication/authentication.module';
 import { UserModule } from './modules/user/user.module';
-import { MongoProvider } from './modules/_shared/mongo-custom-provider/MongoProvider';
-import { MysqlProvider } from './modules/_shared/mysql-custom-provider/MysqlProvider';
-import { convertEnvToBoolean } from './modules/_shared/utils/ConvertEnvToBoolean';
 
 @Global()
 @Module({
