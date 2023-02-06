@@ -21,16 +21,16 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
-    "@nestjs/common": "^9.3.2",
-    "@nestjs/core": "^9.3.2",
+    "@nestjs/common": "^9.3.3",
+    "@nestjs/core": "^9.3.3",
     "@nestjs/jwt": "^10.0.1",
     "@nestjs/passport": "^9.0.1",
-    "@nestjs/platform-fastify": "^9.3.2",
-    "pkg-shared": "github:daghdha1/pkg-shared#master",
+    "@nestjs/platform-fastify": "^9.3.3",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
     "dotenv": "^16.0.3",
     "passport-jwt": "^4.0.1",
+    "pkg-shared": "github:daghdha1/pkg-shared#master",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^4.1.2",
     "rxjs": "^7.8.0"
@@ -38,7 +38,7 @@
   "devDependencies": {
     "@nestjs/cli": "^9.2.0",
     "@nestjs/schematics": "^9.0.4",
-    "@nestjs/testing": "^9.3.2",
+    "@nestjs/testing": "^9.3.3",
     "@types/jest": "29.4.0",
     "@types/node": "^18.11.19",
     "@types/passport-jwt": "^3.0.8",
