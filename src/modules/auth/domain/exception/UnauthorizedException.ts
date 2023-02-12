@@ -1,7 +1,7 @@
 import { BaseException } from "pkg-shared";
 
 
-export class TokenException extends BaseException {
+export class UnauthorizedException extends BaseException {
   constructor(
     readonly message: string,
     method: string,

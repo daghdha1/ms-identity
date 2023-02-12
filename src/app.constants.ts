@@ -1,6 +1,4 @@
-export const AppConstants = {
-  MYSQL_POOL: 'MYSQL_POOL',
-  MYSQL_KNEX: 'MYSQL_KNEX_POOL',
-  MONGO_POOL: 'MONGO_POOL',
-  REDIS_POOL: 'REDIS_POOL',
-};
+export const MYSQL = Symbol('MYSQL');
+export const KNEX = Symbol('KNEX');
+export const MONGO = Symbol('MONGO');
+export const REDIS = Symbol('REDIS');

@@ -13,7 +13,7 @@ async function bootstrap() {
   const app: INestApplication =
     await NestFactory.create<NestFastifyApplication>(
       AppModule,
-      new FastifyAdapter({ caseSensitive: false }),
+      new FastifyAdapter({ caseSensitive: false, logger: true}),
       {
         logger: ['error', 'warn'],
         cors: {
@@ -23,7 +23,7 @@ async function bootstrap() {
       }
     );
   global.getApp = () => app;
-  app.useGlobalPipes(new ValidationPipe({ transform: true }));
+  app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true, forbidNonWhitelisted: true }));
   app.setGlobalPrefix(process.env.APP_GLOBAL_PREFIX);
   await app.listen(
     process.env.APP_LISTEN_PORT || 4001,

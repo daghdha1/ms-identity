@@ -4,7 +4,7 @@ import { UserRepository } from '@User/domain/repository/User.repository';
 import { UserMysqlModel } from '../model/UserMysql.model';
 import { User } from '@User/domain/entity/User';
 import { UserConstants } from '@User/user.constants';
-import { AppConstants } from 'app.constants';
+import { MYSQL } from 'app.constants';
 import { MysqlRepository, queryBuilder } from 'pkg-shared';
 
 export class UserMysqlRepository
@@ -12,13 +12,13 @@ export class UserMysqlRepository
   implements UserRepository
 {
   constructor(
-    @Inject(AppConstants.MYSQL_POOL)
+    @Inject(MYSQL)
     protected pool: Pool
   ) {
     super(pool, { debug: false });
   }
 
-  public async getUserByName(username: string): Promise<User> {
+  public async getUserByName(username: string): Promise<User | undefined> {
     const query = queryBuilder
       .table(UserConstants.MYSQL_USER_PROFILE_TABLE)
       .where({ username })
@@ -28,7 +28,7 @@ export class UserMysqlRepository
     return UserMysqlModel.toEntity(model);
   }
 
-  public async getUserByClientId(clientId: string): Promise<User> {
+  public async getUserByClientId(clientId: string): Promise<User | undefined> {
     const query = queryBuilder
       .table(UserConstants.MYSQL_USER_PROFILE_TABLE)
       .where({ id_client: clientId })
@@ -38,7 +38,7 @@ export class UserMysqlRepository
     return UserMysqlModel.toEntity(model);
   }
 
-  public async createUser(user: User): Promise<boolean> {
+  public async createUser(user: User): Promise<boolean | undefined> {
     const model: UserMysqlModel = UserMysqlModel.fromEntity(user);
     const query = queryBuilder
       .table(UserConstants.MYSQL_USER_PROFILE_TABLE)
@@ -50,18 +50,7 @@ export class UserMysqlRepository
     return true;
   }
 }
-
-/* public async createHookLog(hook: TrackingParcellabHook): Promise<void> {
-    const model = TrackingParcellabHookMysqlModel.fromEntity(hook);
-    const query = mysqlKnex
-        .table(`${TrackingConstants.PREFIX_TRACKING_TABLE}_parcellab_hook_log`)
-        .insert(model)
-        .onConflict('tracking_number')
-        .merge()
-        .toString();
-    await this.insert(query);
-}
-
+/*
 public async getHookLogs(trackingNumber?: string): Promise<TrackingParcellabHook[]> {
     const query = mysqlKnex
         .table(`${TrackingConstants.PREFIX_TRACKING_TABLE}_parcellab_hook_log`)
