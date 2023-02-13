@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { compareStrWithStrHashed } from 'pkg-shared';
+import { compareStrWithStrHashed, decryptStr } from 'pkg-shared';
 import { GetUserService } from '@User/application/service/GetUser.service';
 import { User } from '@User/domain/entity/User';
 import { TokenRepository } from '@Auth/domain/repository/Token.repository';
@@ -38,5 +38,23 @@ export class AuthService {
     if (!redisSessionToken || redisSessionToken !== sessionToken)
       return undefined;
     return user;
+  }
+
+  public async validateUserApi(
+    client_id: string,
+    client_secret: string
+  ): Promise<User | undefined> {
+    const user: User = await this.getUserService.run({ client_id });
+    if (!user || !this.isValidClientSecret(client_secret, user))
+      return undefined;
+    return user;
+  }
+
+  private isValidClientSecret(clientSecret: string, user: User): boolean {
+    const clientSecretDecrypted: string = decryptStr(
+      user.clientSecret,
+      user.password
+    );
+    return clientSecret === clientSecretDecrypted;
   }
 }

@@ -1,16 +1,16 @@
-import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
-import { AccessTokenResponseDto } from '../dto/AccessTokenResponse.dto';
-import { BaseHttpResponse } from 'pkg-shared';
-import { SigninService } from '@Auth/application/service/Signin.service';
-import { SignupService } from '@Auth/application/service/Signup.service';
-import { GetAccessTokenService } from '@Auth/application/service/GetAccessToken.service';
-import { SignupDto } from '@Auth/application/dto/Signup.dto';
-import { GetAccessTokenDto } from '@Auth/application/dto/GetAccessToken.dto';
-import { SigninGuard } from '@Auth/_common/guards/signin.guard';
-//import { LoggedinResponseDto } from '../dto/LoggedinResponse.dto';
-import { LoggedinService } from '@Auth/application/service/Loggedin.service';
+import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { LoggedinGuard } from '@Auth/_common/guards/loggedin.guard';
+import { SigninGuard } from '@Auth/_common/guards/signin.guard';
+import { ApiAuthGuard } from '@Auth/_common/guards/api-auth.guard';
+import { JwtGuard } from '@Auth/_common/guards/jwt.guard';
+import { SignupDto } from '@Auth/application/dto/Signup.dto';
+import { SignupService } from '@Auth/application/service/Signup.service';
+import { SigninService } from '@Auth/application/service/Signin.service';
+import { LoggedinService } from '@Auth/application/service/Loggedin.service';
+import { GenerateTokenService } from '@Auth/application/service/GenerateToken.service';
+import { BaseHttpResponse } from 'pkg-shared';
 import { LoggedinResponseDto } from '../dto/LoggedinResponse.dto';
+import { GenerateTokenResponseDto } from '../dto/GenerateTokenResponse.dto';
 
 @Controller('auth')
 export class AuthController extends BaseHttpResponse {
@@ -18,7 +18,7 @@ export class AuthController extends BaseHttpResponse {
     private readonly signupService: SignupService,
     private readonly signinService: SigninService,
     private readonly loggedinService: LoggedinService,
-    private readonly getAccessTokenService: GetAccessTokenService
+    private readonly generateTokenService: GenerateTokenService
   ) {
     super();
   }
@@ -47,16 +47,18 @@ export class AuthController extends BaseHttpResponse {
     return this.success(response);
   }
 
-  @Post('getAccessToken')
-  public async getAccessToken(@Body() dto: GetAccessTokenDto) {
-    const response: AccessTokenResponseDto =
-      await this.getAccessTokenService.run(dto);
+  @UseGuards(ApiAuthGuard)
+  @Post('token')
+  public async generateToken(@Req() req) {
+    const response: GenerateTokenResponseDto =
+      await this.generateTokenService.run(req.user);
     return this.success(response);
   }
 
-  /* @UseGuards(JwtGuard)
-  @Get('resource')
-  public getResource() {
+  @UseGuards(JwtGuard)
+  @Get('getResource')
+  public getResource(@Req() req) {
+    console.log(req.headers);
     return 'Este es el recurso protegido!!!!';
-  } */
+  }
 }

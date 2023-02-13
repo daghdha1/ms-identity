@@ -4,7 +4,7 @@ import { PassportModule } from '@nestjs/passport';
 import { UserModule } from '@User/user.module';
 import { AuthService } from './application/service/Auth.service';
 import { LoggedinService } from './application/service/Loggedin.service';
-import { GetAccessTokenService } from './application/service/GetAccessToken.service';
+import { GenerateTokenService } from './application/service/GenerateToken.service';
 import { SigninService } from './application/service/Signin.service';
 import { SignupService } from './application/service/Signup.service';
 import { jwtConstants } from './auth.constants';
@@ -14,6 +14,7 @@ import { TokenRedisRepository } from './infrastructure/persistence/database/redi
 import { JwtStrategy } from './_common/guards/jwt.strategy';
 import { SigninStrategy } from './_common/guards/signin.strategy';
 import { LoggedinStrategy } from './_common/guards/loggedin.strategy';
+import { ApiAuthStrategy } from './_common/guards/api-auth.strategy';
 
 @Module({
   imports: [
@@ -28,12 +29,13 @@ import { LoggedinStrategy } from './_common/guards/loggedin.strategy';
   providers: [
     SigninStrategy,
     LoggedinStrategy,
+    ApiAuthStrategy,
     JwtStrategy,
     AuthService,
     SignupService,
     SigninService,
     LoggedinService,
-    GetAccessTokenService,
+    GenerateTokenService,
     {
       provide: TokenRepository,
       useClass: TokenRedisRepository,

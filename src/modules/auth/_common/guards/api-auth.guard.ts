@@ -3,7 +3,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { Observable } from 'rxjs';
 
 @Injectable()
-export class LoggedinGuard extends AuthGuard('custom-loggedin') implements CanActivate {
+export class ApiAuthGuard extends AuthGuard('custom-api-auth') implements CanActivate {
   canActivate(
     context: ExecutionContext
   ): boolean | Promise<boolean> | Observable<boolean> {

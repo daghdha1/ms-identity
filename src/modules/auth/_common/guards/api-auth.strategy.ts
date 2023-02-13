@@ -8,17 +8,19 @@ import { PassportStrategy } from '@nestjs/passport';
 import { AuthService } from '@Auth/application/service/Auth.service';
 
 @Injectable()
-export class LoggedinStrategy extends PassportStrategy(Strategy, 'custom-loggedin') {
+export class ApiAuthStrategy extends PassportStrategy(Strategy, 'custom-api-auth') {
   constructor(private authService: AuthService) {
     super();
   }
 
   async validate(request: any): Promise<any> {
+    console.log(request)
     const body = request.body;
-    if (!body.username || !body.session_token) throw new BadRequestException();
-    const user = await this.authService.validateUserLoggedin(
-      body.username,
-      body.session_token
+    console.log(body);
+    if (!body.client_id || !body.client_secret) throw new BadRequestException();
+    const user = await this.authService.validateUserApi(
+      body.client_id,
+      body.client_secret
     );
     if (!user) throw new UnauthorizedException();
     return user;
