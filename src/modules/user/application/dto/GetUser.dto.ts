@@ -1,10 +1,10 @@
-import { IsOptional, IsString } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator'
 
 export class GetUserDto {
   @IsOptional()
   @IsString()
-  username?: string;
+  username?: string
   @IsOptional()
   @IsString()
-  client_id?: string;
+  client_id?: string
 }

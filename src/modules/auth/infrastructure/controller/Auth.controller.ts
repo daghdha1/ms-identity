@@ -1,16 +1,16 @@
-import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
-import { LoggedinGuard } from '@Auth/_common/guards/loggedin.guard';
-import { SigninGuard } from '@Auth/_common/guards/signin.guard';
-import { ApiAuthGuard } from '@Auth/_common/guards/api-auth.guard';
-import { JwtGuard } from '@Auth/_common/guards/jwt.guard';
-import { SignupDto } from '@Auth/application/dto/Signup.dto';
-import { SignupService } from '@Auth/application/service/Signup.service';
-import { SigninService } from '@Auth/application/service/Signin.service';
-import { LoggedinService } from '@Auth/application/service/Loggedin.service';
-import { GenerateTokenService } from '@Auth/application/service/GenerateToken.service';
-import { BaseHttpResponse } from 'pkg-shared';
-import { LoggedinResponseDto } from '../dto/LoggedinResponse.dto';
-import { GenerateTokenResponseDto } from '../dto/GenerateTokenResponse.dto';
+import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common'
+import { LoggedinGuard } from '@Auth/_common/guards/loggedin.guard'
+import { SigninGuard } from '@Auth/_common/guards/signin.guard'
+import { ApiAuthGuard } from '@Auth/_common/guards/api-auth.guard'
+import { SignupDto } from '@Auth/application/dto/Signup.dto'
+import { SignupService } from '@Auth/application/service/Signup.service'
+import { SigninService } from '@Auth/application/service/Signin.service'
+import { LoggedinService } from '@Auth/application/service/Loggedin.service'
+import { GenerateTokenService } from '@Auth/application/service/GenerateToken.service'
+import { BaseHttpResponse } from 'pkg-shared'
+import { LoggedinResponseDto } from '../dto/LoggedinResponse.dto'
+import { GenerateTokenResponseDto } from '../dto/GenerateTokenResponse.dto'
+import { JwtGuard } from '@Auth/_common/guards/jwt.guard'
 
 @Controller('auth')
 export class AuthController extends BaseHttpResponse {
@@ -20,45 +20,47 @@ export class AuthController extends BaseHttpResponse {
     private readonly loggedinService: LoggedinService,
     private readonly generateTokenService: GenerateTokenService
   ) {
-    super();
+    super()
   }
 
   @Post('signup')
   public async signup(@Body() dto: SignupDto) {
-    const response: boolean = await this.signupService.run(dto);
-    return this.success(response);
+    const response: boolean = await this.signupService.run(dto)
+    return this.success(response)
   }
 
   @UseGuards(SigninGuard)
   @Post('signin')
   public async signin(@Req() req) {
-    const response: LoggedinResponseDto = await this.signinService.run(
-      req.user
-    );
-    return this.success(response);
+    const response: LoggedinResponseDto = await this.signinService.run(req.user)
+    return this.success(response)
   }
 
   @UseGuards(LoggedinGuard)
   @Post('loggedin')
   public async loggedin(@Req() req) {
-    const response: LoggedinResponseDto = await this.loggedinService.run(
-      req.user
-    );
-    return this.success(response);
+    const response: LoggedinResponseDto = await this.loggedinService.run(req.user)
+    return this.success(response)
   }
 
   @UseGuards(ApiAuthGuard)
   @Post('token')
   public async generateToken(@Req() req) {
-    const response: GenerateTokenResponseDto =
-      await this.generateTokenService.run(req.user);
-    return this.success(response);
+    const response: GenerateTokenResponseDto = await this.generateTokenService.run(req.user)
+    return this.success(response)
   }
 
   @UseGuards(JwtGuard)
-  @Get('getResource')
-  public getResource(@Req() req) {
-    console.log(req.headers);
-    return 'Este es el recurso protegido!!!!';
+  @Post('checkAccess')
+  public async checkUserAccess() {
+    return true
   }
+
+  // for notification MS
+  /* @EventPattern(process.env.KAFKA_AUTH_JWT_TOPIC)
+  public async checkApiRequest(@Payload() message: { developer: string }) {
+    console.log(message);
+    console.log('jeje');
+    return 'has llamado a checkApiRequest!';
+  } */
 }

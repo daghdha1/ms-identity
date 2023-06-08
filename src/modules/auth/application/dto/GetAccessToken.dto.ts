@@ -1,8 +1,8 @@
-import { IsString } from 'class-validator';
+import { IsString } from 'class-validator'
 
 export class GetAccessTokenDto {
   @IsString()
-  client_id: string;
+  client_id: string
   @IsString()
-  client_secret: string;
+  client_secret: string
 }

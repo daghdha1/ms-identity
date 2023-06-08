@@ -1,8 +1,8 @@
-import { IsString } from 'class-validator';
+import { IsString } from 'class-validator'
 
 export class AutoSigninDto {
   @IsString()
-  username: string;
+  username: string
   @IsString()
-  refresh_token: string;
+  refresh_token: string
 }
