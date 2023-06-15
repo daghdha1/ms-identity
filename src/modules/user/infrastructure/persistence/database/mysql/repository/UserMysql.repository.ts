@@ -42,18 +42,3 @@ export class UserMysqlRepository extends MysqlRepository implements UserReposito
     return true
   }
 }
-
-/*
-public async getHookLogs(trackingNumber?: string): Promise<TrackingParcellabHook[]> {
-    const query = mysqlKnex
-        .table(`${TrackingConstants.PREFIX_TRACKING_TABLE}_parcellab_hook_log`)
-        .where((builder) => {
-            if (trackingNumber) {
-                builder.where({ tracking_number: trackingNumber });
-            }
-        })
-        .select()
-        .toString();
-    const model: TrackingParcellabHookMysqlModel[] = await this.select(query);
-    return model.map((hook: TrackingParcellabHookMysqlModel) => TrackingParcellabHookMysqlModel.toEntity(hook))
-} */

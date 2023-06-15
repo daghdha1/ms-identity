@@ -52,15 +52,7 @@ export class AuthController extends BaseHttpResponse {
 
   @UseGuards(JwtGuard)
   @Post('checkAccess')
-  public async checkUserAccess() {
-    return true
+  public checkUserAccess() {
+    return 'OK'
   }
-
-  // for notification MS
-  /* @EventPattern(process.env.KAFKA_AUTH_JWT_TOPIC)
-  public async checkApiRequest(@Payload() message: { developer: string }) {
-    console.log(message);
-    console.log('jeje');
-    return 'has llamado a checkApiRequest!';
-  } */
 }

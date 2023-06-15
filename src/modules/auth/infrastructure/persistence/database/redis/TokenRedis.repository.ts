@@ -28,10 +28,4 @@ export class TokenRedisRepository extends RedisRepository implements TokenReposi
     )
     return response === 'OK' ? true : false
   }
-
-  //TODO: Revocar token???
-  public async revokeSessionToken(username: string): Promise<boolean> {
-    console.log(username)
-    return null
-  }
 }

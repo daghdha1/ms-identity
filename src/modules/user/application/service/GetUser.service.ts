@@ -8,7 +8,9 @@ export class GetUserService {
   constructor(private readonly userRepo: UserRepository) {}
 
   public async run(dto: GetUserDto): Promise<User | undefined> {
-    if (dto.username) return this.userRepo.getUserByName(dto.username)
+    if (dto.username) {
+      return this.userRepo.getUserByName(dto.username)
+    }
     return this.userRepo.getUserByClientId(dto.client_id)
   }
 }

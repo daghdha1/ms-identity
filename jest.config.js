@@ -30,7 +30,9 @@ module.exports = {
   // A map from regular expressions to module names or to arrays of module names that allow to stub out resources with a single module
   moduleNameMapper: {
     '^src/(.*)$': '<rootDir>/src/$1',
-    '^test/(.*)$': '<rootDir>/test/$1'
+    '^test/(.*)$': '<rootDir>/test/$1',
+    '^@Auth/(.*)$': '<rootDir>/src/modules/auth/$1',
+    '^@User/(.*)$': '<rootDir>/src/modules/user/$1'
   },
   // A list of paths to directories that Jest should use to search for files in
   roots: ['<rootDir>/src/', '<rootDir>/test/'],
